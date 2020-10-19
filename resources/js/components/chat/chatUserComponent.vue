@@ -7,7 +7,7 @@
 
                     <div class="card-body">
                         <ul>
-                            <li v-for="user in users" :key="user.id ">
+                            <li v-for="user in users" :key="user.id">
                                 {{user.name}}
                             </li>
                         </ul>
@@ -31,7 +31,8 @@
                 this.users = users
             })
             .$on('chat_joining', (user)=>{
-                this.users.push(user)
+                let found = this.users.some(el => el.id === user.id)
+                if (!found) this.users.push(user)
             })
             .$on('chat_leaving',(user)=>{
                 this.users = this.users.filter((u) => {

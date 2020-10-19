@@ -2130,7 +2130,11 @@ __webpack_require__.r(__webpack_exports__);
     _bus__WEBPACK_IMPORTED_MODULE_0__["default"].$on('chat_here', function (users) {
       _this.users = users;
     }).$on('chat_joining', function (user) {
-      _this.users.push(user);
+      var found = _this.users.some(function (el) {
+        return el.id === user.id;
+      });
+
+      if (!found) _this.users.push(user);
     }).$on('chat_leaving', function (user) {
       _this.users = _this.users.filter(function (u) {
         return u.id !== user.id;

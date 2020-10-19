@@ -1,6 +1,6 @@
 <template>
     <div>
-        Chat Box Component
+        <h4>Chat Box Component</h4>
         <chat-message-component />
         <chat-form-component />
     </div>

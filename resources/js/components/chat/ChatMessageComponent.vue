@@ -1,27 +1,11 @@
 <template>
     <div class="chat-list">
-        <div class="messages">
+        <div class="messages" v-for="chat in chats" :key="chat.id">
             <div class="users">
-                User999 <span class="time">20-20-2000 10:10:10</span>
+                {{chat.user.name}} <span class="time">{{chat.created_at}}</span>
             </div>
             <div class="message">
-                "Pesan dari User999"
-            </div>
-        </div>
-        <div class="messages">
-            <div class="users">
-                User777 <span class="time">20-20-2000 10:10:10</span>
-            </div>
-            <div class="message">
-                "Pesan dari User777"
-            </div>
-        </div>
-        <div class="messages">
-            <div class="users">
-                User555 <span class="time">20-20-2000 10:10:10</span>
-            </div>
-            <div class="message">
-                "Pesan dari User555"
+                " {{chat.subject}} "
             </div>
         </div>
     </div>
@@ -29,8 +13,29 @@
 
 <script>
     export default {
+        data(){
+            return {
+                chats: []
+            }
+        },
         mounted() {
-            console.log('Component mounted.')
+            this.getChats()
+        },
+        methods : {
+            getChats(){
+                axios
+                .get('/chat/all')
+                .then(responese => {
+                    this.chats = responese.data.reverse()
+                    this.scrollToBottom()
+                })
+            },
+            scrollToBottom(){
+                setTimeout(function(){
+                    let chat_list = document.getElementsByClassName('chat-list')[0]
+                    chat_list.scrollTop = chat_list.scrollHeight 
+                }, 1)
+            }
         }
     }
 </script>
@@ -44,5 +49,10 @@
         .message{
             font-size: 1.2rem;
         }
+    }
+
+    .chat-list{
+        max-height: 300px;
+        overflow-y: scroll;
     }
 </style>

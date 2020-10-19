@@ -78476,6 +78476,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   encrypted: true
 });
 
+__webpack_require__(/*! ./echo */ "./resources/js/echo.js");
+
 /***/ }),
 
 /***/ "./resources/js/bus.js":
@@ -78854,6 +78856,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChatUserComponent_vue_vue_type_template_id_67a17724___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/echo.js":
+/*!******************************!*\
+  !*** ./resources/js/echo.js ***!
+  \******************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _bus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bus */ "./resources/js/bus.js");
+
+Echo.join('chat-channel').listen('ChatStoredEvent', function (e) {
+  _bus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit('chat_sent', e.data);
+});
 
 /***/ }),
 

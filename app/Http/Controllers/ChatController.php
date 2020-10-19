@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Chat;
+use App\Events\ChatStoredEvent;
 
 class ChatController extends Controller
 {
@@ -21,6 +22,9 @@ class ChatController extends Controller
             'subject' => $request->subject,
             'user_id' => auth()->user()->id
         ]);
+        
+        //semua user yg ada kecuali kita, -> toOthers
+        broadcast(new ChatStoredEvent($chat))->toOthers();
 
         return $chat;
     }

@@ -2096,6 +2096,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _bus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../bus */ "./resources/js/bus.js");
 //
 //
 //
@@ -2112,9 +2113,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      users: []
+    };
+  },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    var _this = this;
+
+    _bus__WEBPACK_IMPORTED_MODULE_0__["default"].$on('chat_here', function (users) {
+      _this.users = users;
+    }).$on('chat_joining', function (user) {
+      _this.users.push(user);
+    }).$on('chat_leaving', function (user) {
+      _this.users = _this.users.filter(function (u) {
+        return u.id !== user.id;
+      });
+    });
   }
 });
 
@@ -66197,28 +66218,35 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [_vm._v("Chat User")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v("\n                    ini dari Example\n                ")
-            ])
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v("User Online : " + _vm._s(_vm.users.length))
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c(
+              "ul",
+              _vm._l(_vm.users, function(user) {
+                return _c("li", { key: user.id }, [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(user.name) +
+                      "\n                        "
+                  )
+                ])
+              }),
+              0
+            )
           ])
         ])
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -78870,7 +78898,14 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bus */ "./resources/js/bus.js");
 
-Echo.join('chat-channel').listen('ChatStoredEvent', function (e) {
+Echo.join('chat-channel').here(function (users) {
+  //
+  _bus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit('chat_here', users);
+}).joining(function (user) {
+  _bus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit('chat_joining', user);
+}).leaving(function (user) {
+  _bus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit('chat_leaving', user);
+}).listen('ChatStoredEvent', function (e) {
   _bus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit('chat_sent', e.data);
 });
 
